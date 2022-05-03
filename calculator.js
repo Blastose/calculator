@@ -160,7 +160,7 @@ equals.addEventListener('click', () => {
   stateMachine.dispatch('pressEquals');
 });
 
-window.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', (e) => {
   console.log(e.key);
   if (numberKeys.includes(e.key)) {
     stateMachine.dispatch('pressNumber', e.key);
