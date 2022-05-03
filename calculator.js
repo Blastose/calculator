@@ -137,6 +137,10 @@ const stateMachine = {
   },
 };
 
+const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+const operatorKeys = ['+', '-', '×', '÷'];
+const equalsKey = ['=', 'Enter'];
+
 const digitButtons = document.querySelectorAll('.calc-key');
 digitButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
@@ -154,4 +158,15 @@ operators.forEach((operator) => {
 const equals = document.querySelector('.equals');
 equals.addEventListener('click', () => {
   stateMachine.dispatch('pressEquals');
+});
+
+window.addEventListener('keydown', (e) => {
+  console.log(e.key);
+  if (numberKeys.includes(e.key)) {
+    stateMachine.dispatch('pressNumber', e.key);
+  } else if (operatorKeys.includes(e.key)) {
+    stateMachine.dispatch('pressOperator', e.key);
+  } else if (equalsKey.includes(e.key)) {
+    stateMachine.dispatch('pressEquals');
+  }
 });
