@@ -146,14 +146,14 @@ const equalsKey = ['=', 'Enter'];
 const digitButtons = document.querySelectorAll('.calc-key');
 digitButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
-    stateMachine.dispatch('pressNumber', e.target.value);
+    stateMachine.dispatch('pressNumber', e.target.getAttribute('data-value'));
   });
 })
 
 const operators = document.querySelectorAll('.operator');
 operators.forEach((operator) => {
   operator.addEventListener('click', (e) => {
-    stateMachine.dispatch('pressOperator', e.target.value);
+    stateMachine.dispatch('pressOperator', e.target.getAttribute('data-value'));
   });
 });
 
