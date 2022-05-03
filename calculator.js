@@ -39,9 +39,11 @@ function appendDigitToNumber(currentNum, nextDigit) {
   if (currentNum === "0") {
     if (nextDigit === "0") {
       return currentNum;
+    } else if (nextDigit === ".") {
+      return `${currentNum}${nextDigit}`;
     } else {
       return nextDigit;
-    }    
+    }
   } else if (currentNum.includes(".") && nextDigit === ".") {
     return currentNum;
   }
