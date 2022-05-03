@@ -59,49 +59,35 @@ const stateMachine = {
       pressNumber(number) {
         this.arg1 = appendDigitToNumber(this.arg1, number);
         this.state = 'INPUT_FOR_ARG1';
-
-        console.log('pressed number from INPUT_FOR_ARG1 state');
       },
       pressOperator(operatorSign) {
         this.operator = operatorSign;
         this.state = 'INPUT_FOR_OPERATOR';
-
-        console.log('pressed operator from INPUT_FOR_ARG1 state');
       },
       pressEquals() {
         console.log("equals: " + operate(this.operator, Number(this.arg1), Number(this.arg2)));
         this.state = 'CALCULATE_RESULT';
-
-        console.log('pressed = from INPUT_FOR_ARG1 state');
       },
     },
     INPUT_FOR_OPERATOR: {
       pressNumber(number) {
         this.arg2 = appendDigitToNumber(this.arg2, number);
         this.state = 'INPUT_FOR_ARG2';
-        
-        console.log('pressed number from INPUT_FOR_OPERATOR state');
       },
       pressOperator(operatorSign) {
         this.operator = operatorSign;
         this.state = 'INPUT_FOR_OPERATOR';
-
-        console.log('pressed operator from INPUT_FOR_OPERATOR state');
       },
       pressEquals() {
         this.state = 'CALCULATE_RESULT';
         this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
         this.arg1 = String(this.result);
-
-        console.log('pressed = from INPUT_FOR_OPERATOR state');
       },
     },
     INPUT_FOR_ARG2: {
       pressNumber(number) {
         this.arg2 = appendDigitToNumber(this.arg2, number);
         this.state = 'INPUT_FOR_ARG2';
-
-        console.log('pressed number from INPUT_FOR_ARG2 state');
       },
       pressOperator(operatorSign) {
         this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
@@ -109,15 +95,11 @@ const stateMachine = {
         this.arg2 = "0";
         this.operator = operatorSign;
         this.state = 'INPUT_FOR_OPERATOR';
-
-        console.log('pressed operator from INPUT_FOR_ARG2 state');
       },
       pressEquals() {
         this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
         this.arg1 = String(this.result);
         this.state = 'CALCULATE_RESULT';
-
-        console.log('pressed = from INPUT_FOR_ARG2 state');
       },
     },
     CALCULATE_RESULT: {
@@ -125,23 +107,17 @@ const stateMachine = {
         this.arg1 = appendDigitToNumber("0", number);
         this.arg2 = "0";
         this.state = 'INPUT_FOR_ARG1';
-
-        console.log('pressed number from CALCULATE_RESULT state');
       },
       pressOperator(operatorSign) {
         this.operator = operatorSign;
         this.arg2 = "0";
         this.state = 'INPUT_FOR_OPERATOR';
-
-        console.log('pressed operator from CALCULATE_RESULT state');
       },
       pressEquals() {
         this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
         console.log("equals: " + this.result);
         this.arg1 = String(this.result);
         this.state = 'CALCULATE_RESULT';
-
-        console.log('pressed = from CALCULATE_RESULT state');
       },
     },
   },
