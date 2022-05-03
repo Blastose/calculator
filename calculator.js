@@ -150,14 +150,14 @@ digitButtons.forEach((button) => {
   });
 })
 
-const operators = document.querySelectorAll('.operator');
+const operators = document.querySelectorAll('.operator-key');
 operators.forEach((operator) => {
   operator.addEventListener('click', (e) => {
     stateMachine.dispatch('pressOperator', e.target.getAttribute('data-value'));
   });
 });
 
-const equals = document.querySelector('.equals');
+const equals = document.querySelector('.equals-key');
 equals.addEventListener('click', () => {
   stateMachine.dispatch('pressEquals');
 });
