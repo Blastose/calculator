@@ -41,7 +41,7 @@ let operatorSign = "";
 const digitButtons = document.querySelectorAll('.calc-key');
 digitButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
-    const display = document.getElementById('calc-curr-display');
+    const display = document.getElementById('number-calc-curr-display');
     display.textContent = `${display.textContent}${e.target.value}`;
   });
 })
@@ -49,8 +49,8 @@ digitButtons.forEach((button) => {
 const operators = document.querySelectorAll('.operator');
 operators.forEach((operator) => {
   operator.addEventListener('click', (e) => {
-    const display = document.getElementById('calc-curr-display');
-    const above = document.getElementById('calc-above-display');
+    const display = document.getElementById('number-calc-curr-display');
+    const above = document.getElementById('number-calc-above-display');
     arg2 = arg1;
     arg1 = Number(display.textContent);
     above.textContent = `${arg1} ${e.target.value}`;
@@ -61,14 +61,14 @@ operators.forEach((operator) => {
 
 const equals = document.querySelector('.equals');
 equals.addEventListener('click', () => {
-  const display = document.getElementById('calc-curr-display');
+  const display = document.getElementById('number-calc-curr-display');
   arg2 = Number(display.textContent);
   let result = operate(operatorSign, arg1, arg2);
-  console.log(arg1);
-  console.log(arg2);
+  console.log("arg1: " + arg1);
+  console.log("arg2: " + arg2);
+  console.log("operator: " + operatorSign);
   console.log(result);
   display.textContent = result;
-
-  const above = document.getElementById('calc-above-display');
+  const above = document.getElementById('number-calc-above-display');
   above.textContent = "";
 });
