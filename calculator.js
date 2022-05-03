@@ -23,9 +23,11 @@ function operate(operator, arg1, arg2) {
     case "-":
       result = subtract(arg1, arg2);
       break;
+    case "*":
     case "×":
       result = multiply(arg1, arg2);
       break; 
+    case "/":
     case "÷":
       result = divide(arg1, arg2);
       break;
@@ -138,7 +140,7 @@ const stateMachine = {
 };
 
 const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
-const operatorKeys = ['+', '-', '×', '÷'];
+const operatorKeys = ['+', '-', '*', '/'];
 const equalsKey = ['=', 'Enter'];
 
 const digitButtons = document.querySelectorAll('.calc-key');
