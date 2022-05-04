@@ -64,6 +64,9 @@ function appendDigitToNumber(currentNum, nextDigit) {
 }
 
 function removeDigitsFromNumber(number, numberOfDigitsToRemove) {
+  if (number === "Infinity" || number === "NaN") {
+    return `${number}`;
+  }
   if (number.charAt(0) !== "-" && number.length === 1) {
     return "0";
   } else if (number === "0") {
@@ -235,7 +238,7 @@ const stateMachine = {
         this.state = 'CALCULATE_RESULT';
       },
       backspace() {
-        this.arg1 = removeDigitsFromNumber(Number(this.arg1), 1);
+        this.arg1 = removeDigitsFromNumber(this.arg1, 1);
         this.arg2 = "0";
         this.operator = "+";
         this.displayBottom.textContent = `${this.arg1}`;
