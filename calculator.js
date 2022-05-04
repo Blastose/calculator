@@ -125,7 +125,7 @@ const stateMachine = {
       pressNumber(number) {
         this.arg1 = appendDigitToNumber("0", number);
         this.arg2 = "0";
-        this.operator = operatorSign;
+        this.operator = "+";
         this.displayTop.textContent = "";
         this.displayBottom.textContent = `${this.arg1}`;
         this.state = 'INPUT_FOR_ARG1';
