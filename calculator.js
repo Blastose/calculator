@@ -14,7 +14,7 @@ function divide(arg1, arg2) {
   return arg1 / arg2;
 }
 
-function operate(operator, arg1, arg2) {
+function binaryOperate(operator, arg1, arg2) {
   let result = 0;
   switch(operator) {
     case "+":
@@ -52,6 +52,26 @@ function appendDigitToNumber(currentNum, nextDigit) {
   return `${currentNum}${nextDigit}`;
 }
 
+function removeDigitsFromNumber(number, numberOfDigitsToRemove) {
+  if (number.charAt(0) !== "-" && number.length === 1) {
+    return "0";
+  } else if (number === "0") {
+    return number;
+  }
+  return number.slice(0, Number(`-${numberOfDigitsToRemove}`));
+}
+
+function unaryOperate(operator, arg1) {
+  let result = 0;
+  switch (operator) {
+    case "":
+      break;
+    default:
+      break;
+  }
+  return result;
+}
+
 const stateMachine = {
   state: 'INPUT_FOR_ARG1',
   arg1: "0",
@@ -74,10 +94,15 @@ const stateMachine = {
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
-        this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
+        this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
         this.displayBottom.textContent = `${this.result}`;
         this.state = 'CALCULATE_RESULT';
       },
+      backspace() {
+        this.arg1 = removeDigitsFromNumber(this.arg1, 1);
+        this.displayBottom.textContent = `${this.arg1}`;
+        this.state = 'INPUT_FOR_ARG1';
+      }
     },
     INPUT_FOR_OPERATOR: {
       pressNumber(number) {
@@ -91,7 +116,7 @@ const stateMachine = {
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
-        this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
+        this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
         this.displayTop.textContent = "";
         this.displayBottom.textContent = `${this.result}`;
         this.arg1 = String(this.result);
@@ -105,7 +130,7 @@ const stateMachine = {
         this.state = 'INPUT_FOR_ARG2';
       },
       pressOperator(operatorSign) {
-        this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
+        this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
         this.arg1 = String(this.result);
         this.arg2 = "0";
         this.operator = operatorSign;
@@ -114,12 +139,17 @@ const stateMachine = {
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
-        this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
+        this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
         this.arg1 = String(this.result);
         this.displayTop.textContent = "";
         this.displayBottom.textContent = `${this.result}`;
         this.state = 'CALCULATE_RESULT';
       },
+      backspace() {
+        this.arg2 = removeDigitsFromNumber(this.arg2, 1);
+        this.displayBottom.textContent = `${this.arg2}`;
+        this.state = 'INPUT_FOR_ARG2';
+      }
     },
     CALCULATE_RESULT: {
       pressNumber(number) {
@@ -138,11 +168,18 @@ const stateMachine = {
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
-        this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
+        this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
         this.arg1 = String(this.result);
         this.displayBottom.textContent = `${this.result}`;
         this.state = 'CALCULATE_RESULT';
       },
+      backspace() {
+        this.arg1 = removeDigitsFromNumber(this.arg1, 1);
+        this.arg2 = "0";
+        this.operator = "+";
+        this.displayBottom.textContent = `${this.arg1}`;
+        this.state = 'INPUT_FOR_ARG1';
+      }
     },
   },
   dispatch(actionName, value) {
@@ -162,6 +199,7 @@ const stateMachine = {
 const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
 const operatorKeys = ['+', '-', '*', '/'];
 const equalsKey = ['=', 'Enter'];
+const backspaceKeys = ['Backspace'];
 
 const digitButtons = document.querySelectorAll('.calc-key');
 digitButtons.forEach((button) => {
@@ -182,6 +220,11 @@ equals.addEventListener('click', () => {
   stateMachine.dispatch('pressEquals');
 });
 
+const backspace = document.querySelector('.backspace-key');
+backspace.addEventListener('click', () => {
+  stateMachine.dispatch('backspace');
+});
+
 document.addEventListener('keydown', (e) => {
   console.log(e.key);
   if (numberKeys.includes(e.key)) {
@@ -190,5 +233,7 @@ document.addEventListener('keydown', (e) => {
     stateMachine.dispatch('pressOperator', e.key);
   } else if (equalsKey.includes(e.key)) {
     stateMachine.dispatch('pressEquals');
+  } else if (backspaceKeys.includes(e.key)) {
+    stateMachine.dispatch('backspace');
   }
 });
