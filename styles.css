@@ -125,6 +125,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+
+  overflow-x: auto;
 }
 
 .calculator-display-top {

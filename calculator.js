@@ -58,39 +58,50 @@ const stateMachine = {
   arg2: "0",
   operator: "+",
   result: "0",
+  displayTop: document.querySelector('.calculator-display-top'),
+  displayBottom: document.querySelector('.calculator-display-bottom'),
   transitions: {
     INPUT_FOR_ARG1: {
       pressNumber(number) {
         this.arg1 = appendDigitToNumber(this.arg1, number);
+        this.displayBottom.textContent = `${this.arg1}`;
         this.state = 'INPUT_FOR_ARG1';
       },
       pressOperator(operatorSign) {
         this.operator = operatorSign;
+        this.displayTop.textContent = `${this.arg1} ${this.operator}`;
+        this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
-        console.log("equals: " + operate(this.operator, Number(this.arg1), Number(this.arg2)));
+        this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
+        this.displayBottom.textContent = `${this.result}`;
         this.state = 'CALCULATE_RESULT';
       },
     },
     INPUT_FOR_OPERATOR: {
       pressNumber(number) {
         this.arg2 = appendDigitToNumber(this.arg2, number);
+        this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_ARG2';
       },
       pressOperator(operatorSign) {
         this.operator = operatorSign;
+        this.displayTop.textContent = `${this.arg1} ${this.operator}`;
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
-        this.state = 'CALCULATE_RESULT';
         this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
+        this.displayTop.textContent = "";
+        this.displayBottom.textContent = `${this.result}`;
         this.arg1 = String(this.result);
+        this.state = 'CALCULATE_RESULT';
       },
     },
     INPUT_FOR_ARG2: {
       pressNumber(number) {
         this.arg2 = appendDigitToNumber(this.arg2, number);
+        this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_ARG2';
       },
       pressOperator(operatorSign) {
@@ -98,11 +109,15 @@ const stateMachine = {
         this.arg1 = String(this.result);
         this.arg2 = "0";
         this.operator = operatorSign;
+        this.displayTop.textContent = `${this.result} ${this.operator}`;
+        this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
         this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
         this.arg1 = String(this.result);
+        this.displayTop.textContent = "";
+        this.displayBottom.textContent = `${this.result}`;
         this.state = 'CALCULATE_RESULT';
       },
     },
@@ -110,17 +125,21 @@ const stateMachine = {
       pressNumber(number) {
         this.arg1 = appendDigitToNumber("0", number);
         this.arg2 = "0";
+        this.displayTop.textContent = "";
+        this.displayBottom.textContent = `${this.arg1}`;
         this.state = 'INPUT_FOR_ARG1';
       },
       pressOperator(operatorSign) {
         this.operator = operatorSign;
         this.arg2 = "0";
+        this.displayTop.textContent = `${this.result} ${this.operator}`;
+        this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_OPERATOR';
       },
       pressEquals() {
         this.result = operate(this.operator, Number(this.arg1), Number(this.arg2));
-        console.log("equals: " + this.result);
         this.arg1 = String(this.result);
+        this.displayBottom.textContent = `${this.result}`;
         this.state = 'CALCULATE_RESULT';
       },
     },
