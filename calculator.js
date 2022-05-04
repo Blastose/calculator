@@ -32,6 +32,7 @@ function binaryOperate(operator, arg1, arg2) {
       result = divide(arg1, arg2);
       break;
     default:
+      console.log("Invalid binary operator: " + operator);
       break;
   }
   return roundResult(result);
@@ -87,6 +88,7 @@ function unaryOperate(operator, arg1) {
       result = arg1 * -1;
       break; 
     default:
+      console.log("Invalid unary operator: " + operator);
       break;
   }
   return roundResult(result);
@@ -281,21 +283,21 @@ const clearAllKeys = [''];
 const digitButtons = document.querySelectorAll('.calc-key');
 digitButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
-    stateMachine.dispatch('pressNumber', e.target.getAttribute('data-value'));
+    stateMachine.dispatch('pressNumber', e.currentTarget.getAttribute('data-value'));
   });
 })
 
 const binaryOperators = document.querySelectorAll('.binary-operator-key');
 binaryOperators.forEach((operator) => {
   operator.addEventListener('click', (e) => {
-    stateMachine.dispatch('pressBinaryOperator', e.target.getAttribute('data-value'));
+    stateMachine.dispatch('pressBinaryOperator', e.currentTarget.getAttribute('data-value'));
   });
 });
 
 const unaryOperators = document.querySelectorAll('.unary-operator-key');
 unaryOperators.forEach((operator) => {
   operator.addEventListener('click', (e) => {
-    stateMachine.dispatch('pressUnaryOperator', e.target.getAttribute('data-value'));
+    stateMachine.dispatch('pressUnaryOperator', e.currentTarget.getAttribute('data-value'));
   })
 });
 
