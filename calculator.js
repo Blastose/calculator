@@ -38,6 +38,9 @@ function binaryOperate(operator, arg1, arg2) {
 }
 
 function appendDigitToNumber(currentNum, nextDigit) {
+  if (currentNum.length > 15) {
+    return currentNum;
+  }
   if (currentNum === "0") {
     if (nextDigit === "0") {
       return currentNum;
