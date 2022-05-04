@@ -43,6 +43,9 @@ function roundResult(result) {
 }
 
 function appendDigitToNumber(currentNum, nextDigit) {
+  if (currentNum === "Infinity" || currentNum === "NaN") {
+    return `${nextDigit}`;
+  }
   if (currentNum.length > 15) {
     return currentNum;
   }
