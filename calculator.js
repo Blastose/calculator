@@ -185,7 +185,7 @@ const stateMachine = {
       backspace() {
         this.arg2 = removeDigitsFromNumber(this.arg2, 1);
         this.displayBottom.textContent = `${this.arg2}`;
-        this.state = 'INPUT_FOR_OPERATOR';
+        this.state = 'INPUT_FOR_ARG2';
       },
       clear() {
         this.arg2 = "0";
