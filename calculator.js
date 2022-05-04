@@ -34,7 +34,11 @@ function binaryOperate(operator, arg1, arg2) {
     default:
       break;
   }
-  return String(result);
+  return roundResult(result);
+}
+
+function roundResult(result) {
+  return String(parseFloat(result.toFixed(12)));
 }
 
 function appendDigitToNumber(currentNum, nextDigit) {
@@ -85,7 +89,7 @@ function unaryOperate(operator, arg1) {
     default:
       break;
   }
-  return String(result);
+  return roundResult(result);
 }
 
 const stateMachine = {
