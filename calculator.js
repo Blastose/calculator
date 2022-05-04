@@ -34,7 +34,7 @@ function binaryOperate(operator, arg1, arg2) {
     default:
       break;
   }
-  return result;
+  return String(result);
 }
 
 function appendDigitToNumber(currentNum, nextDigit) {
@@ -64,12 +64,25 @@ function removeDigitsFromNumber(number, numberOfDigitsToRemove) {
 function unaryOperate(operator, arg1) {
   let result = 0;
   switch (operator) {
-    case "":
+    case "⅟":
+      result = 1 / arg1;
       break;
+    case "x²":
+      result = arg1 * arg1;
+      break;
+    case "√":
+      result = Math.sqrt(arg1);
+      break;
+    case "%":
+      result = arg1 / 100;
+      break; 
+    case "⁺∕₋":
+      result = arg1 * -1;
+      break; 
     default:
       break;
   }
-  return result;
+  return String(result);
 }
 
 const stateMachine = {
@@ -87,11 +100,16 @@ const stateMachine = {
         this.displayBottom.textContent = `${this.arg1}`;
         this.state = 'INPUT_FOR_ARG1';
       },
-      pressOperator(operatorSign) {
+      pressBinaryOperator(operatorSign) {
         this.operator = operatorSign;
         this.displayTop.textContent = `${this.arg1} ${this.operator}`;
         this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_OPERATOR';
+      },
+      pressUnaryOperator(operatorSign) {
+        this.arg1 = unaryOperate(operatorSign, Number(this.arg1));
+        this.displayBottom.textContent = `${this.arg1}`;
+        this.state = 'INPUT_FOR_ARG1';
       },
       pressEquals() {
         this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
@@ -118,7 +136,7 @@ const stateMachine = {
         this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_ARG2';
       },
-      pressOperator(operatorSign) {
+      pressBinaryOperator(operatorSign) {
         this.operator = operatorSign;
         this.displayTop.textContent = `${this.arg1} ${this.operator}`;
         this.state = 'INPUT_FOR_OPERATOR';
@@ -140,7 +158,7 @@ const stateMachine = {
         this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_ARG2';
       },
-      pressOperator(operatorSign) {
+      pressBinaryOperator(operatorSign) {
         this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
         this.arg1 = String(this.result);
         this.arg2 = "0";
@@ -148,6 +166,11 @@ const stateMachine = {
         this.displayTop.textContent = `${this.result} ${this.operator}`;
         this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_OPERATOR';
+      },
+      pressUnaryOperator(operatorSign) {
+        this.arg2 = unaryOperate(operatorSign, Number(this.arg2));
+        this.displayBottom.textContent = `${this.arg2}`;
+        this.state = 'INPUT_FOR_ARG2';
       },
       pressEquals() {
         this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
@@ -159,7 +182,7 @@ const stateMachine = {
       backspace() {
         this.arg2 = removeDigitsFromNumber(this.arg2, 1);
         this.displayBottom.textContent = `${this.arg2}`;
-        this.state = 'INPUT_FOR_ARG2';
+        this.state = 'INPUT_FOR_OPERATOR';
       },
       clear() {
         this.arg2 = "0";
@@ -179,12 +202,19 @@ const stateMachine = {
         this.displayBottom.textContent = `${this.arg1}`;
         this.state = 'INPUT_FOR_ARG1';
       },
-      pressOperator(operatorSign) {
+      pressBinaryOperator(operatorSign) {
         this.operator = operatorSign;
         this.arg2 = "0";
         this.displayTop.textContent = `${this.result} ${this.operator}`;
         this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_OPERATOR';
+      },
+      pressUnaryOperator(operatorSign) {
+        this.arg1 = unaryOperate(operatorSign, Number(this.arg1));
+        this.arg2 = "0";
+        this.operator = "+";
+        this.displayBottom.textContent = `${this.arg1}`;
+        this.state = 'INPUT_FOR_ARG1';
       },
       pressEquals() {
         this.result = binaryOperate(this.operator, Number(this.arg1), Number(this.arg2));
@@ -248,11 +278,18 @@ digitButtons.forEach((button) => {
   });
 })
 
-const operators = document.querySelectorAll('.operator-key');
-operators.forEach((operator) => {
+const binaryOperators = document.querySelectorAll('.binary-operator-key');
+binaryOperators.forEach((operator) => {
   operator.addEventListener('click', (e) => {
-    stateMachine.dispatch('pressOperator', e.target.getAttribute('data-value'));
+    stateMachine.dispatch('pressBinaryOperator', e.target.getAttribute('data-value'));
   });
+});
+
+const unaryOperators = document.querySelectorAll('.unary-operator-key');
+unaryOperators.forEach((operator) => {
+  operator.addEventListener('click', (e) => {
+    stateMachine.dispatch('pressUnaryOperator', e.target.getAttribute('data-value'));
+  })
 });
 
 const equals = document.querySelector('.equals-key');
@@ -280,7 +317,7 @@ document.addEventListener('keydown', (e) => {
   if (numberKeys.includes(e.key)) {
     stateMachine.dispatch('pressNumber', e.key);
   } else if (operatorKeys.includes(e.key)) {
-    stateMachine.dispatch('pressOperator', e.key);
+    stateMachine.dispatch('pressBinaryOperator', e.key);
   } else if (equalsKey.includes(e.key)) {
     stateMachine.dispatch('pressEquals');
   } else if (backspaceKeys.includes(e.key)) {

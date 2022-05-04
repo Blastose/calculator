@@ -86,9 +86,16 @@ body {
 
 .clear-all-key,
 .clear-key,
-.backspace-key,
-.operator-key {
+.backspace-key {
+  background-color: rgb(124, 172, 226);
+}
+
+.binary-operator-key {
   background-color: rgb(156, 225, 248);
+}
+
+.unary-operator-key {
+  background-color: rgb(46, 162, 201);
 }
 
 .equals-key {
