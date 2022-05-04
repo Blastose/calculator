@@ -102,6 +102,14 @@ const stateMachine = {
         this.arg1 = removeDigitsFromNumber(this.arg1, 1);
         this.displayBottom.textContent = `${this.arg1}`;
         this.state = 'INPUT_FOR_ARG1';
+      },
+      clear() {
+        this.arg1 = "0";
+        this.displayBottom.textContent = `${this.arg1}`;
+        this.state = 'INPUT_FOR_ARG1';
+      },
+      clearAll() {
+        this.resetStateMachine();
       }
     },
     INPUT_FOR_OPERATOR: {
@@ -122,6 +130,9 @@ const stateMachine = {
         this.arg1 = String(this.result);
         this.state = 'CALCULATE_RESULT';
       },
+      clearAll() {
+        this.resetStateMachine();
+      }
     },
     INPUT_FOR_ARG2: {
       pressNumber(number) {
@@ -149,6 +160,14 @@ const stateMachine = {
         this.arg2 = removeDigitsFromNumber(this.arg2, 1);
         this.displayBottom.textContent = `${this.arg2}`;
         this.state = 'INPUT_FOR_ARG2';
+      },
+      clear() {
+        this.arg2 = "0";
+        this.displayBottom.textContent = `${this.arg2}`;
+        this.state = 'INPUT_FOR_ARG2';
+      },
+      clearAll() {
+        this.resetStateMachine();
       }
     },
     CALCULATE_RESULT: {
@@ -174,11 +193,21 @@ const stateMachine = {
         this.state = 'CALCULATE_RESULT';
       },
       backspace() {
-        this.arg1 = removeDigitsFromNumber(this.arg1, 1);
+        this.arg1 = removeDigitsFromNumber(Number(this.arg1), 1);
         this.arg2 = "0";
         this.operator = "+";
         this.displayBottom.textContent = `${this.arg1}`;
         this.state = 'INPUT_FOR_ARG1';
+      },
+      clear() {
+        this.arg1 = "0";
+        this.arg2 = "0";
+        this.operator = "+";
+        this.displayBottom.textContent = `${this.arg1}`;
+        this.state = 'INPUT_FOR_ARG1';
+      },
+      clearAll() {
+        this.resetStateMachine();
       }
     },
   },
@@ -194,12 +223,23 @@ const stateMachine = {
       console.log('Invalid action');
     }
   },
+  resetStateMachine() {
+    this.arg1 = "0";
+    this.arg2 = "0";
+    this.operator = "+";
+    this.displayTop.textContent = "";
+    this.displayBottom.textContent = "0";
+    this.state = 'INPUT_FOR_ARG1';
+  }
 };
 
 const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
 const operatorKeys = ['+', '-', '*', '/'];
 const equalsKey = ['=', 'Enter'];
 const backspaceKeys = ['Backspace'];
+const clearKeys = ['c', 'C'];
+const clearAllKeys = [''];
+
 
 const digitButtons = document.querySelectorAll('.calc-key');
 digitButtons.forEach((button) => {
@@ -225,6 +265,16 @@ backspace.addEventListener('click', () => {
   stateMachine.dispatch('backspace');
 });
 
+const clear = document.querySelector('.clear-key');
+clear.addEventListener('click', () => {
+  stateMachine.dispatch('clear');
+});
+
+const clearAll = document.querySelector('.clear-all-key');
+clearAll.addEventListener('click', () => {
+  stateMachine.dispatch('clearAll');
+});
+
 document.addEventListener('keydown', (e) => {
   console.log(e.key);
   if (numberKeys.includes(e.key)) {
@@ -235,5 +285,7 @@ document.addEventListener('keydown', (e) => {
     stateMachine.dispatch('pressEquals');
   } else if (backspaceKeys.includes(e.key)) {
     stateMachine.dispatch('backspace');
+  } else if (clearKeys.includes(e.key)) {
+    stateMachine.dispatch('clear');
   }
 });

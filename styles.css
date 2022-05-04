@@ -84,6 +84,8 @@ body {
   background-color: rgb(105, 192, 221);
 }
 
+.clear-all-key,
+.clear-key,
 .backspace-key,
 .operator-key {
   background-color: rgb(156, 225, 248);
